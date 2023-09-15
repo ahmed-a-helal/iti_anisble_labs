@@ -1,0 +1,18 @@
+- name: Installing and Running nginx Service
+  gather_facts: true
+  hosts: nginx
+  tasks:
+    - name: Update cache and Install nginx
+      ansible.builtin.apt:
+        update_cache: true
+        name: "nginx"
+    - name: Copy Index.html into servers
+      ansible.builtin.copy:
+        dest: /var/www/html/index.html
+        src: ./index.html
+        mode: '0644'
+    - name: Restart Nginx Service
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+        use: auto

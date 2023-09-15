@@ -1,0 +1,7 @@
+- name: Ansible First Playbook
+  gather_facts: false
+  hosts: docker
+  tasks:
+    - name: Update apt Cache
+      ansible.builtin.apt:
+        update_cache: true

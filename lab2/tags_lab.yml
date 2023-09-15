@@ -1,0 +1,14 @@
+- name: Installing Nginx with tags playbook
+  gather_facts: true
+  hosts: nginx
+  tasks:
+    - name: Update cache
+      tags:
+        - update
+        - always
+      ansible.builtin.apt:
+        update_cache: true
+    - name: Install nginx
+      tags: install
+      ansible.builtin.apt:
+        name: "nginx"

@@ -1,0 +1,36 @@
+- name: With playbook-defined variables
+  hosts: nginx
+  tags: cmd_test
+  gather_facts: false
+
+  vars:
+    package_name: nginx
+    package_version: "latest"
+  tasks:
+    - name: Installing with apt
+      ansible.builtin.apt:
+        update_cache: true
+        name: "{{ package_name }}"
+        state: "{{ package_version }}"
+
+- name: With inventory-defined variables
+  hosts: apache
+  gather_facts: false
+
+  tasks:
+    - name: Installing with apt
+      ansible.builtin.apt:
+        update_cache: true
+        name: "{{ package_name }}"
+        state: "{{ package_version }}"
+
+- name: With no-defined variable
+  hosts: docker
+  tags: cmd_test
+  gather_facts: false
+  tasks:
+    - name: Installing with apt
+      ansible.builtin.apt:
+        update_cache: true
+        name: "{{ package_name }}"
+        state: "{{ package_version }}"

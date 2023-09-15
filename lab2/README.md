@@ -1,4 +1,4 @@
-# lab1-ansible-iti
+# lab2-ansible-iti
 
 StudentName:  Ahmed Attia Abdelmaksoud mohamed Helal
 

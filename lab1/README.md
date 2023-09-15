@@ -3,6 +3,8 @@
 
 StudentName:  Ahmed Attia Abdelmaksoud mohamed Helal
 
+`aws_user_data.sh`  is a bash script used to initialize EC2 instance though user_data
+
 ### SSH Access
 
 ![](screenshots/ssh_access.png)

@@ -1,0 +1,26 @@
+- name: Installing and Restarting webserver
+  hosts: webserver
+  ignore_errors: true
+  tasks:
+    - name: Install Nginx on Debian-based OS
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        update_cache: true
+      when: ansible_facts.os_family == "Debian"
+    - name: Install apache on Redhat-based OS
+      ansible.builtin.yum:
+        name: httpd
+        state: present
+        update_cache: true
+      when: ansible_facts.os_family == "RedHat"
+    - name: Restart apache service on Redhat-based OS
+      ansible.builtin.service:
+        name: httpd
+        state: restarted
+      when: ansible_facts.os_family == "RedHat"
+    - name: Restart nginx service on Debian-based OS
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+      when: ansible_facts.os_family == "Debian"

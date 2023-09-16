@@ -1,0 +1,19 @@
+- name: Installing and Restarting webserver
+  hosts: webserver
+  ignore_errors: true
+  tasks:
+    - name: Install Nginx on Debian-based OS
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        update_cache: true
+      when: ansible_facts.os_family == "Debian"
+      register: installation_info
+    - name: View the output of the previous task
+      ansible.builtin.debug:
+        msg: "{{ installation_info }}"
+    - name: Restart nginx service on Debian-based OS incase of change
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+      when: ansible_facts.os_family == "Debian" and installation_info.changed and not installation_info.failed

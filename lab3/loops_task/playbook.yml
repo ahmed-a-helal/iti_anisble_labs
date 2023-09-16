@@ -1,0 +1,25 @@
+- name: Installing using loops
+  hosts: webserver
+  ignore_errors: true
+  tasks:
+    - name: Install latest packages on Debian-based OS
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: "latest"
+        update_cache: true
+      when: ansible_facts.os_family == "Debian"
+      loop:
+        - nginx
+        - docker
+        - mysql-server
+    - name: Install packages on Debian-based OS with different states
+      ansible.builtin.apt:
+        name: "{{ item.package_name }}"
+        state: "{{ item.package_state }}"
+        update_cache: true
+      when: ansible_facts.os_family == "Debian"
+      loop:
+        - {package_name: "redis-server", package_state: "latest"}
+        - {package_name: "docker", package_state: "absent"}
+        - {package_name: "mysql-server", package_state: "absent"}
+        - {package_name: "npm", package_state: "present"}

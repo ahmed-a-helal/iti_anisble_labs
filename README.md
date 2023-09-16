@@ -4,7 +4,7 @@ StudentName:  Ahmed Attia Abdelmaksoud mohamed Helal
 
 the labs are split into directories
 
-Each directory has its own README.md file for its respective screenshots and files 
+Each directory has its own README.md file with its respective screenshots and files 
 
 ### [LAB1](lab1/)
 

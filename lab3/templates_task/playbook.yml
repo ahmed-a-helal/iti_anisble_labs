@@ -1,0 +1,53 @@
+- name: Installing using loops
+  hosts: webserver
+  vars:
+    package_name: "nginx"
+    service_name: "nginx"
+    student:
+      first_name: "Ahmed Attia"
+      last_name: "Helal"
+      bio: "Junior Devops Engineer"
+  vars_files: ./website_file_structure.yml
+
+  tasks:
+    - name: Installing webserver
+      ansible.builtin.apt:
+        name: "{{ package_name }}"
+        update_cache: true
+        state: present
+      notify: "Send_website"
+      register: status
+      changed_when: not status.failed
+      when: ansible_facts.os_family == "Debian"
+
+  handlers:
+    - name: "Send website - Phase1: Initialize Directories"
+      ansible.builtin.file:
+        path: "/var/www/html/{{ item }}"
+        state: directory
+        mode: "755"
+      loop: "{{ website_directories }}"
+      listen: "Send_website"
+
+    - name: "Send website - Phase2: Send static Files"
+      ansible.builtin.copy:
+        src: "./html/{{ item }}"
+        dest: "/var/www/html/{{ item }}"
+        mode: "644"
+      loop: "{{ website_static_files }}"
+      listen: "Send_website"
+      notify: Service Restart
+
+    - name: "Send website - Phase3: Send dynamic Files"
+      ansible.builtin.template:
+        src: "./html/{{ item }}.j2"
+        dest: "/var/www/html/{{ item }}"
+        mode: "644"
+      loop: "{{ website_dynamic_files }}"
+      listen: "Send_website"
+      notify: Service Restart
+
+    - name: Service Restart
+      ansible.builtin.service:
+        name: "{{ service_name }}"
+        state: restarted
